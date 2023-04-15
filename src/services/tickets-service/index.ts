@@ -4,16 +4,24 @@ import ticketsRepository from '@/repositories/tickets-repository';
 import { invalidDataError, notFoundError } from '@/errors';
 
 async function getTickets() {
-  const tickets = await ticketsRepository.getTickets();
+  const ticket: Ticket = await ticketsRepository.getTickets();
+  if (!ticket) throw notFoundError();
 
-  if (!tickets) throw notFoundError();
+  const ticketType: TicketType = await ticketsRepository.getTicketTypeById(ticket.ticketTypeId);
 
-  return tickets;
+  return {
+    id: ticket.id,
+    status: ticket.status,
+    ticketTypeId: ticket.ticketTypeId,
+    enrollmentId: ticket.enrollmentId,
+    TicketType: ticketType,
+    createdAt: ticket.createdAt,
+    updatedAt: ticket.updatedAt,
+  };
 }
 
 async function getTicketsTypes() {
-  const ticketsTypes = await ticketsRepository.getTicketsTypes();
-
+  const ticketsTypes: TicketType[] = await ticketsRepository.getTicketsTypes();
   if (!ticketsTypes) throw notFoundError();
 
   return ticketsTypes;
@@ -21,7 +29,6 @@ async function getTicketsTypes() {
 
 async function postTickets(ticketTypeId: number, userId: number) {
   const userEnrollment = await enrollmentsService.getOneWithAddressByUserId(userId);
-
   if (!userEnrollment) throw notFoundError();
 
   const data: CreateTicketParams = {
@@ -31,7 +38,6 @@ async function postTickets(ticketTypeId: number, userId: number) {
   };
 
   const ticketType: TicketType = await ticketsRepository.getTicketTypeById(ticketTypeId);
-
   const ticket: Ticket = await ticketsRepository.create(data);
 
   return {

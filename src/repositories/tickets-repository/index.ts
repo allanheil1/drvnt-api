@@ -11,7 +11,7 @@ import { CreateTicketParams } from '@/services/tickets-service';
 // "createdAt"
 // "updatedAt"
 
-async function create(data: CreateTicketParams) {
+async function create(data: CreateTicketParams): Promise<Ticket> {
   return prisma.ticket.create({
     data,
   });
