@@ -26,8 +26,8 @@ export async function postTickets(req: AuthenticatedRequest, res: Response) {
   const { ticketTypeId } = req.body;
 
   try {
-    const event = await ticketsService.postTickets(ticketTypeId, userId);
-    return res.status(httpStatus.OK).send(event);
+    const ticket = await ticketsService.postTickets(ticketTypeId, userId);
+    return res.status(httpStatus.CREATED).send(ticket);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send({});
   }

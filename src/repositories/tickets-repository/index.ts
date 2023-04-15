@@ -1,5 +1,6 @@
 import { Prisma, Ticket, TicketType } from '@prisma/client';
 import { prisma } from '@/config';
+import { CreateTicketParams } from '@/services/tickets-service';
 //import { Ticket } from '../../../../drivent-api/node_modules/.prisma/client/index'
 
 //tickets
@@ -10,7 +11,7 @@ import { prisma } from '@/config';
 // "createdAt"
 // "updatedAt"
 
-async function create(data: Prisma.TicketCreateInput) {
+async function create(data: CreateTicketParams) {
   return prisma.ticket.create({
     data,
   });
@@ -29,6 +30,14 @@ async function getTickets(): Promise<Ticket> {
 // "createdAt"
 // "updatedAt"
 
+async function getTicketTypeById(ticketId: number): Promise<TicketType> {
+  return prisma.ticketType.findFirst({
+    where: {
+      id: ticketId,
+    },
+  });
+}
+
 async function getTicketsTypes(): Promise<TicketType[]> {
   return prisma.ticketType.findMany();
 }
@@ -36,6 +45,7 @@ async function getTicketsTypes(): Promise<TicketType[]> {
 const ticketsRepository = {
   create,
   getTickets,
+  getTicketTypeById,
   getTicketsTypes,
 };
 
