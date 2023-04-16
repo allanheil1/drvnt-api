@@ -5,8 +5,8 @@ import { AuthenticatedRequest } from '@/middlewares';
 
 export async function getTickets(req: Request, res: Response) {
   try {
-    const event = await ticketsService.getTickets();
-    return res.status(httpStatus.OK).send(event);
+    const ticket = await ticketsService.getTickets();
+    return res.status(httpStatus.OK).send(ticket);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send({});
   }
@@ -14,8 +14,8 @@ export async function getTickets(req: Request, res: Response) {
 
 export async function getTicketsTypes(req: Request, res: Response) {
   try {
-    const event = await ticketsService.getTicketsTypes();
-    return res.status(httpStatus.OK).send(event);
+    const ticket = await ticketsService.getTicketsTypes();
+    return res.status(httpStatus.OK).send(ticket);
   } catch (error) {
     return res.status(httpStatus.NOT_FOUND).send({});
   }

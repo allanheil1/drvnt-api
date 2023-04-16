@@ -1,15 +1,6 @@
-import { Prisma, Ticket, TicketType } from '@prisma/client';
+import { Ticket, TicketType } from '@prisma/client';
 import { prisma } from '@/config';
 import { CreateTicketParams } from '@/services/tickets-service';
-//import { Ticket } from '../../../../drivent-api/node_modules/.prisma/client/index'
-
-//tickets
-// id
-// "ticketTypeId"
-// "enrollmentId"
-// status
-// "createdAt"
-// "updatedAt"
 
 async function create(data: CreateTicketParams): Promise<Ticket> {
   return prisma.ticket.create({
@@ -21,14 +12,13 @@ async function getTickets(): Promise<Ticket> {
   return prisma.ticket.findFirst();
 }
 
-//types
-// id
-// name
-// price
-// "isRemote"
-// "includesHotel"
-// "createdAt"
-// "updatedAt"
+async function getTicketById(ticketId: number): Promise<Ticket> {
+  return prisma.ticket.findFirst({
+    where: {
+      id: ticketId,
+    },
+  });
+}
 
 async function getTicketTypeById(ticketId: number): Promise<TicketType> {
   return prisma.ticketType.findFirst({
@@ -45,6 +35,7 @@ async function getTicketsTypes(): Promise<TicketType[]> {
 const ticketsRepository = {
   create,
   getTickets,
+  getTicketById,
   getTicketTypeById,
   getTicketsTypes,
 };
